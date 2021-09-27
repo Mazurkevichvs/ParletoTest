@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Pracownicy</title>
+</head>
+
+<body>
+    <div id="app">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Imie</th>
+                    <th>Nazwisko</th>
+                    <th>Dział</th>
+                    <th>Wynagrodzenie z walutą</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="pracownik in pracownicy">
+                    <template v-if="pracownik.isVisible == true">
+                        <td>{{pracownik.imie}}</td>
+                        <td>{{pracownik.nazwisko}}</td>
+                        <td>{{pracownik.dzial}}</td>
+                        <td>{{pracownik.wynagrodzenieKwota }} {{pracownik.wynagrodzenieWaluta}} </td>
+                    </template>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3">
+                        Suma w dziale:
+                        <select v-on:change="selectDzial($event)">
+                            <option v-for="dzial in dzialy">{{ dzial }}</option>
+                        </select>
+                    </td>
+                    <td>{{ suma }}</td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="suma">Całkowita suma:</td>
+                    <td>{{ showSum()  }}</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <section class="search__box">
+            <div>
+                <label for="Osoba">Wyszukaj osobę: </label>
+                <input type="text" name="Osoba" v-model="search" v-on:input="filteredPerson()">
+            </div>
+
+            <div class="search_checkbox">
+                <p>Wyszukaj po działu: </p>
+                <div v-for="dzial in dzialy">
+                    <label v-bind:for="dzial">{{ dzial }}</label>
+                    <input type="checkbox" v-bind:name="dzial" v-model="checkedBox" v-bind:value="dzial"
+                        v-on:change="filteredBox()">
+                </div>
+
+
+
+            </div>
+            <div class="fromto">
+                <p>Wyszukaj po opłacie:</p>
+                <label for="od">Od</label>
+                <input type="text" name="od" v-model="fromCost" v-on:input="filteredCost" placeholder="0">
+                <label for="do">Do</label>
+                <input type="text" name="do" v-model="toCost" v-on:input="filteredCost" placeholder="0">
+            </div>
+
+
+        </section>
+        <section>
+            <div class="add__person">
+            <h2>Dodaj pracownika:</h2>
+            
+            <form class="" action="#">
+                <label for="imie">Imie:</label>
+                <input type="text" name="imie" v-model="newPerson.imie" required>
+                <label for="nazwisko">Nazwisko:</label>
+                <input type="text" name="nazwisko" v-model="newPerson.nazwisko" required>
+                <label for="dzial">Dział:</label>
+                <input type="text" name="dzial" v-model="newPerson.dzial" required>
+                <label for="wynagrodzenie">Wynagrodzenie:</label>
+                <input type="text" name="wynagrodzenie" v-model="newPerson.wynagrodzenieKwota" required>
+                <label for="waluta">Waluta:</label>
+                <input type="text" name="waluta" v-model="newPerson.wynagrodzenieWaluta" required>
+                <button class="btn" type="submit" v-on:click="addPerson()">Dodaj</button>
+            </form>
+        </div>
+        </section>
+
+
+
+    </div>
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
